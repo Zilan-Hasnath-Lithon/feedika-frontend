@@ -13,8 +13,11 @@ const Youtube = () => {
                     { withCredentials: true }
                 );
 
-                const sortedData = response.data
-                    .sort((a, b) => new Date(b.createdAt || b._id.getTimestamp()) - new Date(a.createdAt || a._id.getTimestamp()));
+                const sortedData = (response.data || []).sort(
+                    (a, b) =>
+                        new Date(b.createdAt || b._id?.getTimestamp?.()) -
+                        new Date(a.createdAt || a._id?.getTimestamp?.())
+                );
                 setRawData(sortedData);
             } catch (err) {
                 console.error(err);
@@ -38,29 +41,33 @@ const Youtube = () => {
     };
 
     return (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-5 mt-14 sm:mt-16 md:mt-20">
+        <div className="p-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {rawData.map((feed) => (
                 <div
                     key={feed._id}
-                    className="border border-gray-200 rounded-xl p-4 bg-white shadow-md hover:shadow-xl transition-all duration-300 flex flex-col"
+                    className="bg-white border border-gray-200 rounded-xl p-4 shadow-md flex flex-col gap-3"
                 >
-                    <iframe
-                        width="100%"
-                        height="220"
-                        src={getEmbedLink(feed.link)}
-                        allowFullScreen
-                        className="rounded-lg"
-                    ></iframe>
+                    <div className="relative w-full pt-[56.25%] overflow-hidden rounded-lg bg-black">
+                        <iframe
+                            title={feed._id}
+                            src={getEmbedLink(feed.link)}
+                            className="absolute top-0 left-0 w-full h-full border-0"
+                            allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+                            allowFullScreen
+                        />
+                    </div>
 
-                    <h2 className="text-[17px] font-semibold text-gray-800 mt-3 leading-snug">
-                        {feed.title}
-                    </h2>
+                    <h3 className="text-base font-semibold text-gray-900 leading-tight">
+                        {feed.title || 'Untitled'}
+                    </h3>
 
-                    {feed.category && (
-                        <p className="text-sm font-medium text-gray-600 mt-1">
+                    {Array.isArray(feed.category) && (
+                        <p className="text-sm text-gray-600">
                             Category: {feed.category.join(', ')}
                         </p>
                     )}
+
+                    <p className="text-xs text-gray-500">YouTube</p>
                 </div>
             ))}
         </div>
