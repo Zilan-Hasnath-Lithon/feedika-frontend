@@ -38,44 +38,26 @@ const Youtube = () => {
     };
 
     return (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '25px', padding: '20px' }}>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-5 mt-24">
             {rawData.map((feed) => (
                 <div
                     key={feed._id}
-                    style={{
-                        border: '1px solid #eee',
-                        borderRadius: '12px',
-                        padding: '15px',
-                        boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-                        backgroundColor: '#fff',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        justifyContent: 'flex-start'
-                    }}
+                    className="border border-gray-200 rounded-xl p-4 bg-white shadow-md hover:shadow-xl transition-all duration-300 flex flex-col"
                 >
                     <iframe
                         width="100%"
                         height="220"
                         src={getEmbedLink(feed.link)}
                         allowFullScreen
-                        style={{ borderRadius: '10px' }}
+                        className="rounded-lg"
                     ></iframe>
-                    <h2 style={{
-                        fontSize: '18px',
-                        fontWeight: '600',
-                        color: '#222',
-                        marginTop: '12px',
-                        lineHeight: '1.3'
-                    }}>
+
+                    <h2 className="text-[17px] font-semibold text-gray-800 mt-3 leading-snug">
                         {feed.title}
                     </h2>
+
                     {feed.category && (
-                        <p style={{
-                            fontSize: '14px',
-                            fontWeight: '500',
-                            color: '#555',
-                            marginTop: '6px'
-                        }}>
+                        <p className="text-sm font-medium text-gray-600 mt-1">
                             Category: {feed.category.join(', ')}
                         </p>
                     )}
